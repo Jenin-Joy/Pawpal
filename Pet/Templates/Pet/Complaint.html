@@ -1,0 +1,236 @@
+{% extends 'Pet/Head.html' %}
+{% block content %}
+<div class="complaint-container">
+    <!-- Complaint Form Section -->
+    <div class="form-section">
+        <h2 class="section-title">Submit a Complaint</h2>
+        <form method="POST" enctype="multipart/form-data" class="complaint-form">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="txt_title">Title</label>
+                <input type="text" 
+                       name="txt_title" 
+                       id="txt_title" 
+                       required
+                       placeholder="Enter complaint title">
+            </div>
+            <div class="form-group">
+                <label for="txt_content">Content</label>
+                <textarea name="txt_content" 
+                          id="txt_content" 
+                          required
+                          placeholder="Describe your complaint in detail"></textarea>
+            </div>
+            <div class="form-actions">
+                <button type="submit" class="submit-btn">
+                    <i class="fas fa-paper-plane"></i> Submit Complaint
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Complaints List Section -->
+    <div class="complaints-section">
+        <h2 class="section-title">Complaints List</h2>
+        <div class="complaints-table">
+            <table>
+                <thead>
+                    <tr>
+                        <th>No.</th>
+                        <th>Title</th>
+                        <th>Content</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for i in complaint %}
+                    <tr>
+                        <td>{{forloop.counter}}</td>
+                        <td>{{i.complaint_title}}</td>
+                        <td>{{i.complaint_content}}</td>
+                        <td>
+                            <a href="{% url 'Pet:delcomplaint' i.id %}" class="delete-btn">
+                                <i class="fas fa-trash-alt"></i> Delete
+                            </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<style>
+    .complaint-container {
+        max-width: 1200px;
+        padding: 0 1rem;
+    }
+
+    .section-title {
+        font-size: 1.75rem;
+        color: #333;
+        margin-bottom: 1.5rem;
+        padding-bottom: 0.5rem;
+        border-bottom: 2px solid #f22e15;
+    }
+
+    /* Form Styling */
+    .form-section {
+        background: white;
+        padding: 2rem;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        margin-bottom: 2rem;
+    }
+
+    .complaint-form {
+        display: grid;
+        gap: 1.5rem;
+    }
+
+    .form-group {
+        display: grid;
+        gap: 0.5rem;
+    }
+
+    .form-group label {
+        font-weight: 500;
+        color: #444;
+    }
+
+    .form-group input[type="text"],
+    .form-group textarea {
+        width: 100%;
+        padding: 0.75rem;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+    }
+
+    .form-group textarea {
+        min-height: 150px;
+        resize: vertical;
+    }
+
+    .form-group input[type="text"]:focus,
+    .form-group textarea:focus {
+        outline: none;
+        border-color: #f22e15;
+        box-shadow: 0 0 0 3px rgba(242, 46, 21, 0.1);
+    }
+
+    .submit-btn {
+        background-color: #f22e15;
+        color: white;
+        border: none;
+        padding: 0.75rem 1.5rem;
+        border-radius: 4px;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        justify-content: center;
+    }
+
+    .submit-btn:hover {
+        background-color: #d42812;
+        transform: translateY(-1px);
+    }
+
+    /* Table Styling */
+    .complaints-section {
+        background: white;
+        padding: 2rem;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .complaints-table {
+        overflow-x: auto;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 1rem;
+    }
+
+    th, td {
+        padding: 1rem;
+        text-align: left;
+        border-bottom: 1px solid #eee;
+    }
+
+    th {
+        background-color: #f8f9fa;
+        font-weight: 600;
+        color: #333;
+    }
+
+    tr:hover {
+        background-color: #f8f9fa;
+    }
+
+    .delete-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.5rem 1rem;
+        background-color: #dc3545;
+        color: white;
+        border-radius: 4px;
+        text-decoration: none;
+        font-size: 0.875rem;
+        transition: all 0.3s ease;
+    }
+
+    .delete-btn:hover {
+        background-color: #c82333;
+        transform: translateY(-1px);
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+        .complaint-container {
+            margin: 1rem;
+        }
+
+        .form-section,
+        .complaints-section {
+            padding: 1rem;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+        }
+
+        table {
+            font-size: 0.875rem;
+        }
+
+        th, td {
+            padding: 0.75rem;
+        }
+
+        .delete-btn {
+            padding: 0.4rem 0.8rem;
+        }
+    }
+
+    @media (max-width: 480px) {
+        th, td {
+            padding: 0.5rem;
+        }
+
+        .delete-btn {
+            padding: 0.3rem 0.6rem;
+            font-size: 0.75rem;
+        }
+    }
+</style>
+</html>
+{% endblock content %}

@@ -1,0 +1,105 @@
+{% extends 'Admin/Head.html' %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Brand</title>
+    <style>
+        table {
+            border-collapse: collapse;
+            margin: 20px auto;
+            width: 60%;
+            font-family: Arial, sans-serif;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+    
+        th, td {
+            padding: 12px 15px;
+            border: 1px solid #ccc;
+            text-align: center;
+        }
+    
+        th {
+            background-color: #f4f4f4;
+        }
+    
+        input[type="text"] {
+            width: 90%;
+            padding: 8px;
+            font-size: 14px;
+            box-sizing: border-box;
+        }
+    
+        input[type="submit"] {
+            padding: 10px 20px;
+            font-size: 14px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: background-color 0.3s ease;
+        }
+    
+        input[type="submit"]:hover {
+            background-color: #218838;
+        }
+    
+        .sa {
+            text-decoration: none;
+            padding: 6px 12px;
+            margin: 0 4px;
+            border-radius: 4px;
+            font-size: 13px;
+            color: white;
+            background-color: #007bff;
+            transition: background-color 0.3s ease;
+        }
+    
+        .sa:hover {
+            background-color: #0056b3;
+        }
+    
+        .sa.delete {
+            background-color: #dc3545;
+        }
+    
+        .sa.delete:hover {
+            background-color: #c82333;
+        }
+    </style>
+    
+</head>
+<body>
+    <form method="POST">
+        {%csrf_token%}
+    <table border="2" align="center">
+        <tr>
+            <td>Brand</td>
+            <td><input type="text" name="txt_brand" id="txt_brand" placeholder="Enter Brand" required></td>
+        </tr>
+        <tr>
+            <td colspan="2" align="center"><input type="submit" value="Add"></td>
+        </tr>
+     
+    </table>    
+    </form> 
+    <table  border="1" align="center">
+        <tr>
+            <th>Sl.no</th>
+            <th>Brand</th>
+            <th>Action</th>
+        </tr>
+        {%  for i in Brand %}
+        <tr>
+            <td>{{forloop.counter}}</td>
+            <td>{{i.brand_name}}</td>
+            <td><a class="sa" href="{%  url 'Admin:DeleteBrand' i.id %}">Delete</a> </td>
+        </tr>
+        {% endfor %}
+    </table>   
+</body>
+</html>
+{% endblock content %}

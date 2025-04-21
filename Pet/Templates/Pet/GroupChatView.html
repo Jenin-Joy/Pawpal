@@ -1,0 +1,98 @@
+{% for i in data %}
+        <!-- <div class="date-con">
+            {{i.chat_time|date}}
+        </div> -->
+        {% if i.user_from_id != tid %}
+        {% if i.post != None %}
+        <div class="par-r-mess">
+            <div class="s-user">
+                <img src="{{i.user_from.pet_photo.url}}" alt="">
+            </div>
+            <div class="r-mess">
+                <div class="con-width">
+                    <a href="{{i.post.post_photo.url}}"><img src="{{i.post.post_photo.url}}" width="250px" height="250px" style="border-radius: 5%;" alt=""></a>
+                </div>
+                <div class="r-time">
+                    {{i.chat_time|time}}
+                </div>
+            </div>
+        </div>
+        {% elif i.chat_file != '' %}
+        <div class="par-r-mess">
+            <div class="s-user">
+                <img src="{{i.user_from.pet_photo.url}}" alt="">
+            </div>
+            <div class="r-mess">
+                <div class="con-width">
+                    <a href="{{i.chat_file.url}}"><img src="{{i.chat_file.url}}" width="250px" height="250px" style="border-radius: 5%;" alt=""></a>
+                </div>
+                <div class="r-time">
+                    {{i.chat_time|time}}
+                </div>
+            </div>
+        </div>
+        {% else %}
+        <div class="par-r-mess">
+            <div class="r-user">
+                <img src="{{i.user_from.pet_photo.url}}" alt="">
+            </div>
+            <div class="r-mess">
+                <div class="con-width">
+                    {{i.chat_content}}
+                </div>
+                <div class="r-time">
+                    {{i.chat_time|time}}
+                </div>
+            </div>
+        </div>
+        {% endif %}
+        {% else %}
+        {% if i.post != None %}
+        <div class="par-s-mess">
+            <div class="s-user-cont">
+                <div class="s-mess">
+                    <div class="con-width">
+                        <a href="{{i.post.post_photo.url}}"><img src="{{i.post.post_photo.url}}" width="250px" height="250px" style="border-radius: 5%;" alt=""></a>
+                    </div>
+                    <div class="r-time">
+                        {{i.chat_time|time}}
+                    </div>
+                </div>
+                <div class="s-user">
+                    <img src="{{i.user_from.pet_photo.url}}" alt="">
+                </div>
+            </div>
+        </div>
+        {% elif i.chat_file != '' %}
+        <div class="par-s-mess">
+            <div class="s-user-cont">
+                <div class="s-mess">
+                    <div class="con-width">
+                        <a href="{{i.chat_file.url}}"><img src="{{i.chat_file.url}}" width="250px" height="250px" style="border-radius: 5%;" alt=""></a>
+                    </div>
+                    <div class="s-time">{{i.chat_time|time}}</div>
+                </div>
+                <div class="s-user">
+                    <img src="{{i.user_from.pet_photo.url}}" alt="">
+                </div>
+            </div>
+        </div>
+        {% else %}
+        <div class="par-s-mess">
+            <div class="s-user-cont">
+                <div class="s-mess">
+                    <div class="con-width">
+                        {{i.chat_content}}
+                    </div>
+                    <div class="s-time">
+                        {{i.chat_time|time}}
+                    </div>
+                </div>
+                <div class="s-user">
+                    <img src="{{i.user_from.pet_photo.url}}" alt="">
+                </div>
+            </div>
+        </div>
+        {% endif %}
+        {% endif %}
+        {% endfor %}

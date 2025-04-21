@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <form method="POST">
+        {%csrf_token%}
+    <table border="2" align="center">
+        <tr>
+            <th>SIno</th>
+            <th>Content</th>
+            <th>Action</th>
+            
+        </tr>
+        {%  for i in feedback %}
+        <tr>
+            <td>{{forloop.counter}}</td>
+            <td>{{i.feedback_content}}</td>
+            <td></td>
+        </tr>
+        {% endfor %}
+    </table>
+</form>
+        
+</body>
+</html>

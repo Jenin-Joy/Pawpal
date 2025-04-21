@@ -1,0 +1,168 @@
+{% extends 'Pet/Head.html' %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .alert-box {
+            display: none;
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: #4caf50;
+            /* success green */
+            color: white;
+            padding: 15px 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+            opacity: 1;
+            transition: opacity 0.5s ease-out;
+            font-family: sans-serif;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="contacts">
+        <div class="contacts-header">
+            <h3 class="contacts-title"><i class="fas fa-users"></i> Users <span style="margin-left: auto;"><input
+                        type="text" class="search-text" onkeyup="searchUsers(this.value)"
+                        placeholder="Search user..."></span></h3>
+        </div>
+        <ul class="contact-list" id="contactlist">
+            {% for i in user %}
+            <li class="contact-item">
+                <img src="{{i.pet_photo.url}}" alt="Contact">
+                <span class="contact-name">{{i.pet_name}}</span>
+                {% if i.to_user.first or i.from_user.first %}
+                    {% if i.to_user.first.status == 1 or i.from_user.first.status == 1 %}
+                        <span style="margin-left: auto;">Friends</span>
+                    {% else %}
+                        {% if i.from_user.first.from_user.id == i.id %}
+                            <span style="margin-left: auto;" onclick="acceptrequest('{{i.from_user.first.id}}')">Accept</span>
+                        {% elif i.to_user.first.to_user.id == i.id %}
+                            <span style="margin-left: auto;">Request Send</span>
+                        {% else %}
+                            <span style="margin-left: auto;">None</span>
+                        {% endif %}
+                    {% endif %}
+                {% else %}
+                <span style="margin-left: auto;" onclick="sendFriendrequest('{{i.id}}')"><i
+                        class="fas fa-paper-plane"></i> Send Request</span>
+                {% endif %}
+
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+    <div id="custom-alert" class="alert-box">
+    </div>
+</body>
+
+</html>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script>
+    function sendFriendrequest(id) {
+        var ur = "{% url 'Pet:sendfriendrequest' %}"
+        $.ajax({
+            url: ur,
+            data: { id: id, },
+            success: function (data) {
+                const alertBox = document.getElementById('custom-alert');
+                alertBox.style.display = 'block';
+                alertBox.innerHTML = data.msg
+                setTimeout(() => {
+                    alertBox.style.opacity = '0';
+                    setTimeout(() => {
+                        alertBox.style.display = 'none';
+                        location.reload();
+                    }, 500);
+                }, 3000);
+
+            },
+        });
+    }
+
+    function acceptrequest(id) {
+        var ur = "{% url 'Pet:acceptrequest' %}"
+        $.ajax({
+            url: ur,
+            data: { id: id, },
+            success: function (data) {
+                const alertBox = document.getElementById('custom-alert');
+                alertBox.style.display = 'block';
+                alertBox.innerHTML = data.msg
+                setTimeout(() => {
+                    alertBox.style.opacity = '0';
+                    setTimeout(() => {
+                        alertBox.style.display = 'none';
+                        location.reload();
+                    }, 500);
+                }, 3000);
+
+            },
+        });
+    }
+
+    function searchUsers(name) {
+        var ur = "{% url 'Pet:ajaxsearchusers' %}";
+        $.ajax({
+            url: ur,
+            data: { name: name },
+            success: function (data) {
+                $('#contactlist').empty();
+                if (data.user.length == 0) {
+                        var contactItem = `
+                        <span class="contact-name">No Users Found</span>
+                        `;
+
+                        $('#contactlist').append(contactItem);;
+                    }
+                
+                data.user.forEach(function (user) {
+                    let statusSpan = '';
+
+                    const toUserExists = user.to_user && user.to_user.length > 0;
+                    const fromUserExists = user.from_user && user.from_user.length > 0;
+
+                    if (toUserExists || fromUserExists) {
+                        const toUserStatus = toUserExists ? user.to_user[0].status : null;
+                        const fromUserStatus = fromUserExists ? user.from_user[0].status : null;
+
+                        if (toUserStatus === 1 || fromUserStatus === 1) {
+                            statusSpan = `<span style="margin-left: auto;">Friends</span>`;
+                        } else {
+                            if (fromUserExists && user.from_user[0].from_user_id == user.id) {
+                                statusSpan = `<span style="margin-left: auto;" onclick="acceptrequest('${user.from_user[0].id}')">Accept</span>`;
+                            } else if (toUserExists && user.to_user[0].to_user_id == user.id) {
+                                statusSpan = `<span style="margin-left: auto;">Request Sent</span>`;
+                            } else {
+                                statusSpan = `<span style="margin-left: auto;">None</span>`;
+                            }
+                        }
+                    } else {
+                        statusSpan = `<span style="margin-left: auto;" onclick="sendFriendrequest('${user.id}')"><i class="fas fa-paper-plane"></i> Send Request</span>`;
+                    }
+
+                    var contactItem = `
+                        <li class="contact-item">
+                            <img src="${user.pet_photo}" alt="Contact">
+                            <span class="contact-name">${user.pet_name}</span>
+                            ${statusSpan}
+                        </li>
+                    `;
+
+                    $('#contactlist').append(contactItem);
+                });
+            },
+        });
+    }
+
+
+</script>
+{% endblock content %}

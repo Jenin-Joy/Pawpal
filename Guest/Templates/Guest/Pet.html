@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PetPal - Register Your Pet</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        :root {
+            --sapphire-50: #eef3ff;
+            --sapphire-100: #d9e4ff;
+            --sapphire-200: #bcceff;
+            --sapphire-300: #94b0ff;
+            --sapphire-400: #6a8eff;
+            --sapphire-500: #4a6dff;
+            --sapphire-600: #3a56f5;
+            --sapphire-700: #2e43d9;
+            --sapphire-800: #2939b0;
+            --sapphire-900: #263487;
+            --sapphire-950: #1a2056;
+
+            --gray-50: #f9fafb;
+            --gray-100: #f3f4f6;
+            --gray-200: #e5e7eb;
+            --gray-300: #d1d5db;
+            --gray-400: #9ca3af;
+            --gray-500: #6b7280;
+            --gray-600: #4b5563;
+            --gray-700: #374151;
+            --gray-800: #1f2937;
+            --gray-900: #111827;
+
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+
+            --radius-sm: 0.25rem;
+            --radius: 0.5rem;
+            --radius-md: 0.75rem;
+            --radius-lg: 1rem;
+            --radius-full: 9999px;
+        }
+
+        body {
+            background-color: var(--gray-100);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 1rem;
+        }
+
+        .registration-container {
+            background-color: white;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-lg);
+            width: 100%;
+            max-width: 600px;
+            overflow: hidden;
+        }
+
+        .registration-header {
+            background-color: var(--sapphire-600);
+            color: white;
+            padding: 1.5rem;
+            text-align: center;
+        }
+
+        .registration-header h1 {
+            font-size: 1.75rem;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+        }
+
+        .registration-header p {
+            font-size: 0.9375rem;
+            opacity: 0.9;
+        }
+
+        .registration-body {
+            padding: 2rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.25rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--gray-700);
+        }
+
+        .input-group {
+            position: relative;
+        }
+
+        .input-group input,
+        .input-group select,
+        .input-group textarea {
+            width: 100% !important;
+            padding: 0.75rem 1rem;
+            border: 1px solid var(--gray-300);
+            border-radius: var(--radius);
+            font-size: 1rem;
+            transition: all 0.2s ease;
+        }
+
+        .input-group input:focus,
+        .input-group select:focus,
+        .input-group textarea:focus {
+            outline: none;
+            border-color: var(--sapphire-300);
+            box-shadow: 0 0 0 3px var(--sapphire-100);
+        }
+
+        .input-group textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .input-icon {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--gray-500);
+        }
+
+        .file-input-container {
+            position: relative;
+            overflow: hidden;
+            display: inline-block;
+            width: 100%;
+        }
+
+        .file-input-button {
+            border: 1px dashed var(--gray-300);
+            border-radius: var(--radius);
+            padding: 1.5rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .file-input-button:hover {
+            border-color: var(--sapphire-300);
+            background-color: var(--sapphire-50);
+        }
+
+        .file-input-button i {
+            font-size: 2rem;
+            color: var(--sapphire-500);
+            margin-bottom: 0.5rem;
+        }
+
+        .file-input-button span {
+            display: block;
+            color: var(--gray-600);
+        }
+
+        .file-input {
+            position: absolute;
+            left: 0;
+            top: 0;
+            opacity: 0;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+        }
+
+        .file-preview {
+            margin-top: 1rem;
+            display: none;
+            text-align: center;
+        }
+
+        .file-preview img {
+            max-width: 200px;
+            max-height: 200px;
+            border-radius: var(--radius);
+            border: 1px solid var(--gray-200);
+        }
+
+        .btn {
+            display: inline-block;
+            width: 100%;
+            padding: 0.75rem;
+            border: none;
+            border-radius: var(--radius);
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-align: center;
+        }
+
+        .btn-primary {
+            background-color: var(--sapphire-600);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--sapphire-700);
+        }
+
+        .password-toggle {
+            position: absolute;
+            right: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--gray-500);
+            cursor: pointer;
+        }
+
+        @media (max-width: 480px) {
+            .registration-header {
+                padding: 1.25rem;
+            }
+            
+            .registration-body {
+                padding: 1.5rem;
+            }
+        }
+        .input-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+}
+
+.input-row .input-group {
+    flex: 1;
+}
+
+.input-row .input-group label {
+    margin-bottom: 0.5rem;
+}
+
+.input-row .input-group input {
+    width: 100%;
+}
+.form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--gray-700);
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 1px solid var(--gray-300);
+            border-radius: var(--radius);
+            font-size: 1rem;
+            transition: all 0.2s ease;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary-500);
+            box-shadow: 0 0 0 3px var(--primary-50);
+        }
+
+        select.form-control {
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%236b7280' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 0.75rem center;
+            background-size: 16px 12px;
+            padding-right: 2.5rem;
+        }
+
+    </style>
+</head>
+
+<body>
+    <div class="registration-container">
+        <div class="registration-header">
+            <h1>
+                <i class="fas fa-paw"></i>
+                Register Your Pet
+            </h1>
+            <p>Create a profile for your furry friend</p>
+        </div>
+
+        <div class="registration-body">
+            <form method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="txt_name">Pet Name</label>
+                    <div class="input-group">
+                        <input type="text" name="txt_name" id="txt_name" placeholder="Enter your pet's name" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="file_photo">Pet Photo</label>
+                    <div class="file-input-container">
+                        <div class="file-input-button">
+                            <i class="fas fa-camera"></i>
+                            <span>Click to upload a photo</span>
+                            <input type="file" name="file_photo" id="file_photo" class="file-input" accept="image/*" required>
+                        </div>
+                    </div>
+                    <div class="file-preview" id="filePreview">
+                        <img id="previewImage" src="#" alt="Preview">
+                    </div>
+                </div>
+
+                <div class="form-group input-row">
+                    <div class="form-group">
+                        <label for="sel_cat">Category</label>
+                        <div class="input-group">
+                            <select name="sel_cat" id="sel_cat" required class="form-control">
+                                <option value="">--- Select Category ---</option>
+                                {% for i in category %}
+                                <option value="{{i.id}}">{{i.category_name}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+    
+                    <div class="form-group">
+                        <label for="sel_breed">Breed</label>
+                        <div class="input-group">
+                            <select name="sel_breed" id="sel_breed" required class="form-control">
+                                <option value="">--- Select Breed ---</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group input-row">
+                    <div class="input-group">
+                        <label for="txt_dob">Date of Birth</label>
+                        <input type="date" name="txt_dob" id="txt_dob" required>
+                    </div>
+                
+                    <div class="input-group">
+                        <label for="txt_email">Email</label>
+                        <input type="email" name="txt_email" id="txt_email" placeholder="Enter your email" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="txt_bio">Bio</label>
+                    <div class="input-group">
+                        <textarea name="txt_bio" id="txt_bio" placeholder="Tell us about your pet..."></textarea>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="txt_password">Password</label>
+                    <div class="input-group">
+                        <input type="password" name="txt_password" id="txt_password" placeholder="Create a password" required>
+                        <i class="fas fa-eye password-toggle" id="togglePassword"></i>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-primary">Register Pet</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script>
+        // Image preview functionality
+        document.getElementById('file_photo').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    document.getElementById('previewImage').src = event.target.result;
+                    document.getElementById('filePreview').style.display = 'block';
+                }
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // Password toggle
+        const togglePassword = document.querySelector('#togglePassword');
+        const password = document.querySelector('#txt_password');
+
+        togglePassword.addEventListener('click', function() {
+            const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
+            password.setAttribute('type', type);
+            this.classList.toggle('fa-eye-slash');
+        });
+
+        // AJAX breed loading
+        $("#sel_cat").change(function () {
+            var did = $(this).val();
+            var ur = "{% url 'Guest:ajaxbreed' %}"
+            $.ajax({
+                url: ur,
+                data: { did: did, },
+                success: function (data) {
+                    $("#sel_breed").html(data);
+                },
+            });
+        });
+    </script>
+</body>
+
+</html>

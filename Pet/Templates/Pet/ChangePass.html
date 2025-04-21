@@ -1,0 +1,107 @@
+{% extends 'Pet/Head.html' %}
+{% block content %}
+<div class="profile-edit-container">
+    <h2 class="profile-edit-title"><i class="fas fa-key"></i> Change Password</h2>
+    <form method="POST" class="profile-edit-form">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="txt_oldpass">Old Password</label>
+            <input type="password" name="txt_oldpass" id="txt_oldpass" required>
+        </div>
+        <div class="form-group">
+            <label for="txt_newpass">New Password</label>
+            <input type="password" name="txt_newpass" id="txt_newpass" required>
+        </div>
+        <div class="form-group">
+            <label for="txt_repass">Confirm New Password</label>
+            <input type="password" name="txt_repass" id="txt_repass" required>
+        </div>
+        <div class="form-group">
+            <input type="submit" value="Change Password">
+        </div>
+    </form>
+</div>
+
+<style>
+    .profile-edit-container {
+        max-width: 600px;
+        margin: auto auto;
+        background-color: white;
+        border-radius: var(--radius-lg);
+        padding: 2rem;
+        box-shadow: var(--shadow-md);
+    }
+
+    .profile-edit-title {
+        font-size: 1.5rem;
+        font-weight: 600;
+        color: var(--gray-800);
+        margin-bottom: 1.5rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .profile-edit-title i {
+        color: var(--sapphire-500);
+    }
+
+    .form-group {
+        margin-bottom: 1.25rem;
+    }
+
+    .form-group label {
+        display: block;
+        font-weight: 500;
+        color: var(--gray-800);
+        margin-bottom: 0.5rem;
+    }
+
+    .form-group input[type="password"] {
+        width: 100%;
+        padding: 0.75rem;
+        border: 1px solid var(--gray-200);
+        border-radius: var(--radius);
+        font-size: 1rem;
+        background-color: var(--gray-50);
+        transition: all 0.2s ease;
+        color: var(--gray-800);
+    }
+
+    .form-group input[type="password"]:focus {
+        outline: none;
+        border-color: var(--sapphire-300);
+        background-color: white;
+        box-shadow: 0 0 0 3px var(--sapphire-50);
+    }
+
+    .form-group input[type="submit"] {
+        background-color: var(--sapphire-600);
+        color: white;
+        border: none;
+        padding: 0.75rem 1.5rem;
+        border-radius: var(--radius);
+        font-size: 1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background-color 0.2s ease;
+        width: 100%;
+    }
+
+    .form-group input[type="submit"]:hover {
+        background-color: var(--sapphire-700);
+    }
+
+    @media (max-width: 768px) {
+        .profile-edit-container {
+            margin: 1rem;
+            padding: 1.5rem;
+        }
+
+        .form-group input[type="submit"] {
+            padding: 0.75rem;
+        }
+    }
+</style>
+</html>
+{% endblock content %}

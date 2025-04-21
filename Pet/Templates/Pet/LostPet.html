@@ -1,0 +1,262 @@
+{% extends 'Pet/Head.html' %}
+{% block content %}
+<div class="lost-pet-container">
+    <!-- Add Lost Pet Form Section -->
+    <div class="form-section">
+        <h2 class="section-title"><i class="fas fa-paw"></i> Report Lost Pet</h2>
+        <form method="POST" enctype="multipart/form-data" class="lost-pet-form">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="txt_name">Pet Name</label>
+                <input type="text" name="txt_name" id="txt_name" required 
+                       placeholder="Enter pet's name">
+            </div>
+            <div class="form-group">
+                <label for="txt_description">Description</label>
+                <textarea name="txt_description" id="txt_description" required
+                          placeholder="Describe your pet (breed, color, distinctive marks, etc.)"></textarea>
+            </div>
+            <div class="form-group">
+                <label for="file_photo">Pet Photo</label>
+                <div class="file-input-wrapper">
+                    <input type="file" name="file_photo" id="file_photo" required accept="image/*">
+                    <p class="file-hint">Upload a clear photo of your pet</p>
+                </div>
+            </div>
+            <div class="form-group">
+                <button type="submit" class="submit-btn">
+                    <i class="fas fa-search"></i> Report Lost Pet
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Lost Pets List Section -->
+    <div class="pets-list-section">
+        <h2 class="section-title"><i class="fas fa-list"></i> Lost Pets</h2>
+        <div class="pets-grid">
+            {% for i in lostpet %}
+            <div class="pet-card">
+                <div class="pet-image">
+                    <img src="{{i.lostpet_photo.url}}" alt="{{i.lostpet_name}}">
+                </div>
+                <div class="pet-details">
+                    <h3 class="pet-name">{{i.lostpet_name}}</h3>
+                    <p class="pet-description">{{i.lostpet_description}}</p>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+<style>
+    .lost-pet-container {
+        max-width: 1200px;
+        margin: auto auto;
+        padding: 0 1rem;
+    }
+
+    .section-title {
+        font-size: 1.75rem;
+        font-weight: 600;
+        color: var(--gray-800);
+        margin-bottom: 1.5rem;
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+    }
+
+    .section-title i {
+        color: var(--sapphire-500);
+    }
+
+    /* Form Styling */
+    .form-section {
+        background-color: white;
+        border-radius: var(--radius-lg);
+        padding: 2rem;
+        box-shadow: var(--shadow-md);
+        margin-bottom: 2rem;
+    }
+
+    .lost-pet-form {
+        display: grid;
+        gap: 1.5rem;
+    }
+
+    .form-group {
+        display: grid;
+        gap: 0.5rem;
+    }
+
+    .form-group label {
+        font-weight: 500;
+        color: var(--gray-700);
+    }
+
+    .form-group input[type="text"],
+    .form-group textarea {
+        width: 100%;
+        padding: 0.75rem;
+        border: 1px solid var(--gray-200);
+        border-radius: var(--radius);
+        font-size: 1rem;
+        transition: all 0.2s ease;
+    }
+
+    .form-group textarea {
+        min-height: 120px;
+        resize: vertical;
+    }
+
+    .form-group input[type="text"]:focus,
+    .form-group textarea:focus {
+        outline: none;
+        border-color: var(--sapphire-400);
+        box-shadow: 0 0 0 3px var(--sapphire-100);
+    }
+
+    .file-input-wrapper {
+        border: 2px dashed var(--sapphire-200);
+        padding: 1.5rem;
+        border-radius: var(--radius);
+        background-color: var(--sapphire-50);
+        text-align: center;
+    }
+
+    .file-hint {
+        color: var(--gray-600);
+        font-size: 0.875rem;
+        margin-top: 0.5rem;
+    }
+
+    .submit-btn {
+        background-color: var(--sapphire-600);
+        color: white;
+        border: none;
+        padding: 1rem 2rem;
+        border-radius: var(--radius);
+        font-size: 1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        width: 100%;
+    }
+
+    .submit-btn:hover {
+        background-color: var(--sapphire-700);
+        transform: translateY(-1px);
+    }
+
+    /* Pets Grid Styling */
+    .pets-list-section {
+        background-color: white;
+        border-radius: var(--radius-lg);
+        padding: 2rem;
+        box-shadow: var(--shadow-md);
+    }
+
+    .pets-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 1.5rem;
+    }
+
+    .pet-card {
+        border: 1px solid var(--gray-200);
+        border-radius: var(--radius-lg);
+        overflow: hidden;
+        transition: transform 0.2s ease;
+        background-color: white;
+    }
+
+    .pet-card:hover {
+        transform: translateY(-4px);
+        box-shadow: var(--shadow-lg);
+    }
+
+    .pet-image {
+        aspect-ratio: 4/3;
+        overflow: hidden;
+    }
+
+    .pet-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.3s ease;
+    }
+
+    .pet-card:hover .pet-image img {
+        transform: scale(1.05);
+    }
+
+    .pet-details {
+        padding: 1.5rem;
+    }
+
+    .pet-name {
+        font-size: 1.25rem;
+        font-weight: 600;
+        color: var(--gray-800);
+        margin-bottom: 0.5rem;
+    }
+
+    .pet-description {
+        color: var(--gray-600);
+        font-size: 0.875rem;
+        line-height: 1.5;
+        margin-bottom: 1rem;
+    }
+
+    .contact-btn {
+        background-color: var(--sapphire-100);
+        color: var(--sapphire-700);
+        border: none;
+        padding: 0.75rem 1.5rem;
+        border-radius: var(--radius);
+        font-size: 0.875rem;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        width: 100%;
+    }
+
+    .contact-btn:hover {
+        background-color: var(--sapphire-200);
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+        .lost-pet-container {
+            margin: 1rem;
+        }
+
+        .form-section,
+        .pets-list-section {
+            padding: 1.5rem;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+        }
+
+        .pets-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .submit-btn {
+            padding: 0.875rem;
+        }
+    }
+</style>
+</html>
+{% endblock content %}

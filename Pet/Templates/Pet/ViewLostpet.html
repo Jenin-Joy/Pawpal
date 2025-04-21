@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <form method="POST">
+        {%csrf_token%}
+    <table border="2" align="center">
+        <tr>
+            <th>SIno</th>
+            <th>Pet Name</th>
+            <th>Description</th>
+            <th>Photo</th>
+            <th>Action</th>
+            
+        </tr>
+        {%  for i in lostpet %}
+        <tr>
+            <td>{{forloop.counter}}</td>
+            <td>{{i.lostpet_name}}</td>
+            <td>{{i.lostpet_description}}</td>
+            <td><img src="{{i.lostpet_photo.url}}" width="100px" height="100px"/></td>
+            <td>{% if i.lostpet_status == 0 %}
+                Missing
+                {% endif %}
+                {% if i.lostpet_status == 1 %}
+                Founded
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+</form>
+        
+</body>
+</html>

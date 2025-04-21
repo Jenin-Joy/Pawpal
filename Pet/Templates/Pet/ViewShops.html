@@ -1,0 +1,161 @@
+{% extends 'Pet/Head.html' %}
+{% block content %}
+<style>
+    /* Card Container */
+    .shops-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 1.5rem;
+        /* padding: 1.5rem; */
+    }
+
+    /* Card */
+    .shop-card {
+        background-color: white;
+        border-radius: var(--radius-lg);
+        box-shadow: var(--shadow);
+        overflow: hidden;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .shop-card:hover {
+        transform: translateY(-5px);
+        box-shadow: var(--shadow-md);
+    }
+
+    /* Card Header */
+    .shop-card-header {
+        position: relative;
+        padding: 1.25rem;
+        border-bottom: 1px solid var(--gray-200);
+    }
+
+    .shop-card-image {
+        width: 100%;
+        height: 150px;
+        object-fit: cover;
+        border-radius: var(--radius) var(--radius) 0 0;
+        display: block;
+    }
+
+    .shop-card-title {
+        font-size: 1.25rem;
+        font-weight: 600;
+        color: var(--gray-800);
+        margin-bottom: 0.25rem;
+        margin-top: 0.75rem;
+    }
+
+    /* Card Body */
+    .shop-card-body {
+        padding: 1.25rem;
+        flex-grow: 1;
+    }
+
+    .shop-card-info {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        font-size: 0.9375rem;
+        color: var(--gray-700);
+    }
+
+    .shop-card-info span {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .shop-card-info i {
+        color: var(--sapphire-500);
+        width: 1.5rem;
+        text-align: center;
+    }
+
+    /* Card Footer */
+    .shop-card-footer {
+        padding: 1rem 1.25rem;
+        border-top: 1px solid var(--gray-200);
+        display: flex;
+        justify-content: flex-end;
+    }
+
+    .shop-card-action {
+        background-color: var(--sapphire-600);
+        color: white;
+        border: none;
+        padding: 0.5rem 1rem;
+        border-radius: var(--radius);
+        font-size: 0.9375rem;
+        font-weight: 500;
+        text-decoration: none;
+        transition: background-color 0.2s ease;
+    }
+
+    .shop-card-action:hover {
+        background-color: var(--sapphire-700);
+    }
+
+    /* Empty State */
+    .no-shops {
+        grid-column: 1 / -1;
+        text-align: center;
+        padding: 2rem;
+        background-color: white;
+        border-radius: var(--radius-lg);
+        box-shadow: var(--shadow);
+    }
+
+    .no-shops-message {
+        color: var(--gray-500);
+        font-size: 1rem;
+        font-style: italic;
+    }
+
+    /* Responsive Adjustments */
+    @media (max-width: 768px) {
+        .shops-container {
+            grid-template-columns: 1fr;
+            padding: 1rem;
+        }
+
+        .shop-card-image {
+            height: 180px;
+        }
+    }
+</style>
+
+<div class="shops-container">
+    {% for i in shop %}
+    <div class="shop-card">
+        <div class="shop-card-header">
+            <img src="{{ i.shop_photo.url }}" alt="Photo of {{ i.shop_name }}" class="shop-card-image">
+            <h3 class="shop-card-title">{{ i.shop_name }}</h3>
+        </div>
+        <div class="shop-card-body">
+            <div class="shop-card-info">
+                <span>
+                    <i class="fas fa-map-marker-alt"></i>
+                    {{ i.place.district.district_name }}
+                </span>
+                <span>
+                    <i class="fas fa-city"></i>
+                    {{ i.place.place_name }}
+                </span>
+            </div>
+        </div>
+        <div class="shop-card-footer">
+            <a href="{% url 'Pet:shopchatpage' i.id %}" class="shop-card-action">Chat</a> &nbsp;
+            <a href="{% url 'Pet:viewproducts' i.id %}" class="shop-card-action">View</a>
+        </div>
+    </div>
+    {% empty %}
+    <div class="no-shops">
+        <p class="no-shops-message">No shops available.</p>
+    </div>
+    {% endfor %}
+</div>
+
+{% endblock content %}

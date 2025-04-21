@@ -1,0 +1,121 @@
+{% extends 'Shop/Head.html' %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Profile</title>
+    <style>
+        .profile-section {
+            background-color: var(--gray-50);
+            border-radius: var(--radius-lg);
+            padding: 1.5rem;
+            box-shadow: var(--shadow);
+            margin: 2rem auto;
+            max-width: 600px;
+        }
+
+        .contacts-header {
+            margin-bottom: 1.25rem;
+            text-align: center;
+        }
+
+        .contacts-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--gray-800);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .contacts-title i {
+            color: var(--sapphire-500);
+        }
+
+        .profile-form {
+            display: grid;
+            gap: 1rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-label {
+            font-weight: 600;
+            color: var(--gray-700);
+            margin-bottom: 0.25rem;
+        }
+
+        .form-input {
+            padding: 0.75rem;
+            border: 1px solid var(--gray-300);
+            border-radius: var(--radius);
+            background-color: var(--gray-100);
+            transition: border-color 0.2s ease;
+        }
+
+        .form-input:focus {
+            border-color: var(--sapphire-500);
+            outline: none;
+        }
+
+        .submit-btn {
+            display: inline-block;
+            padding: 0.75rem 1.5rem;
+            background-color: var(--sapphire-600);
+            color: white;
+            border: none;
+            border-radius: var(--radius);
+            font-weight: 500;
+            cursor: pointer;
+            text-align: center;
+            transition: background-color 0.2s ease;
+        }
+
+        .submit-btn:hover {
+            background-color: var(--sapphire-700);
+        }
+
+        @media (max-width: 768px) {
+            .profile-section {
+                padding: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="profile-section">
+        <div class="contacts-header">
+            <h3 class="contacts-title"><i class="fas fa-edit"></i> Edit Profile</h3>
+        </div>
+        <form method="POST" class="profile-form">
+            {% csrf_token %}
+            <div class="form-group">
+                <label class="form-label" for="txt_name">Name</label>
+                <input type="text" class="form-input" name="txt_name" id="txt_name" value="{{shop.shop_name}}">
+            </div>
+            <div class="form-group">
+                <label class="form-label" for="txt_email">Email</label>
+                <input type="text" class="form-input" name="txt_email" id="txt_email" value="{{shop.shop_email}}">
+            </div>
+            <div class="form-group">
+                <label class="form-label" for="txt_contact">Contact</label>
+                <input type="text" class="form-input" name="txt_contact" id="txt_contact" value="{{shop.shop_contact}}">
+            </div>
+            <div class="form-group">
+                <label class="form-label" for="txt_address">Address</label>
+                <input type="text" class="form-input" name="txt_address" id="txt_address" value="{{shop.shop_address}}">
+            </div>
+            <div style="text-align:center; margin-top: 1.5rem;">
+                <input type="submit" class="submit-btn" value="Submit">
+            </div>
+        </form>
+    </div>
+</body>
+</html>
+{% endblock content %}

@@ -1,0 +1,78 @@
+{% extends 'Pet/Head.html' %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .alert-box {
+    display: none;
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background-color: #4caf50; /* success green */
+    color: white;
+    padding: 15px 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.2);
+    z-index: 1000;
+    opacity: 1;
+    transition: opacity 0.5s ease-out;
+    font-family: sans-serif;
+}
+
+    </style>
+</head>
+
+<body>
+    <div class="contacts">
+        <div class="contacts-header">
+            <h3 class="contacts-title"><i class="fas fa-users"></i> Notification</h3>
+        </div>
+        <ul class="contact-list">
+            {% for i in user %}
+                <li class="contact-item">
+                    <img src="{{i.from_user.pet_photo.url}}" alt="Contact">
+                    <span class="contact-name">{{i.from_user.pet_name}}</span>
+                    {% if i.status == 1 %}
+                    <span style="margin-left: auto;">Friends</span>
+                    {% else %}
+                    <span style="margin-left: auto;" onclick="acceptrequest('{{i.id}}')">Accept</span>
+                    {% endif %}
+
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+    <div id="custom-alert" class="alert-box">
+    </div>
+</body>
+
+</html>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script>
+    function acceptrequest(id) {
+        var ur = "{% url 'Pet:acceptrequest' %}"
+        $.ajax({
+            url: ur,
+            data: { id: id, },
+            success: function (data) {
+                const alertBox = document.getElementById('custom-alert');
+                alertBox.style.display = 'block';
+                alertBox.innerHTML = data.msg
+                setTimeout(() => {
+                    alertBox.style.opacity = '0';
+                    setTimeout(() => {
+                        alertBox.style.display = 'none';
+                        location.reload();
+                    }, 500);
+                }, 3000);
+
+            },
+        });
+    }
+</script>
+{% endblock content %}

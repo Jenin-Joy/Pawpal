@@ -1,0 +1,276 @@
+{% extends 'Pet/Head.html' %}
+{% block content %}
+<div class="group-members-container">
+    <!-- Members Section -->
+    <div class="members-list-section">
+        <h2 class="section-title"><i class="fas fa-paw"></i> Group Members</h2>
+        {% if members %}
+        <table class="members-table">
+            <thead>
+                <tr>
+                    <th>No.</th>
+                    <th>Photo</th>
+                    <th>Member</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for i in members %}
+                <tr>
+                    <td data-label="No.">{{ forloop.counter }}</td>
+                    <td data-label="Photo">
+                        <img src="{{ i.pet.pet_photo.url }}" alt="{{ i.pet.pet_name }}'s photo" class="member-photo" loading="lazy">
+                    </td>
+                    <td data-label="Member">{{ i.pet.pet_name }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <p class="empty-state">No members in this group yet.</p>
+        {% endif %}
+    </div>
+</div>
+
+<style>
+.group-members-container {
+    max-width: 1000px;
+    margin: auto auto;
+    padding: 0 1rem;
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+/* Fade-in animation */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Section Styling */
+.group-list-section,
+.members-list-section {
+    background-color: white;
+    border-radius: var(--radius-lg);
+    padding: 2rem;
+    box-shadow: var(--shadow-md);
+    margin-bottom: 2rem;
+}
+
+.section-title {
+    font-size: 1.75rem;
+    font-weight: 600;
+    color: var(--gray-800);
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.section-title i {
+    color: var(--sapphire-500);
+    font-size: 1.5rem;
+}
+
+/* Table Styling (Shared) */
+.group-table,
+.members-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    font-size: 0.9375rem;
+    background-color: white;
+    border-radius: var(--radius-md);
+    overflow: hidden;
+}
+
+.group-table th,
+.group-table td,
+.members-table th,
+.members-table td {
+    padding: 1rem;
+    text-align: left;
+}
+
+.group-table th,
+.members-table th {
+    background-color: var(--sapphire-100);
+    color: var(--gray-800);
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.875rem;
+}
+
+.group-table td,
+.members-table td {
+    border-bottom: 1px solid var(--gray-200);
+    color: var(--gray-700);
+}
+
+.group-table tr:last-child td,
+.members-table tr:last-child td {
+    border-bottom: none;
+}
+
+.group-table tr:hover,
+.members-table tr:hover {
+    background-color: var(--sapphire-50);
+    transition: background-color 0.2s ease;
+}
+
+/* Group Photo */
+.group-photo {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: var(--radius);
+    border: 2px solid var(--sapphire-200);
+    transition: transform 0.2s ease;
+}
+
+.group-photo:hover {
+    transform: scale(1.05);
+}
+
+/* Member Photo */
+.member-photo {
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: var(--radius-full);
+    border: 2px solid var(--sapphire-200);
+    transition: transform 0.2s ease;
+}
+
+.member-photo:hover {
+    transform: scale(1.1);
+}
+
+/* Action Button */
+.action-cell {
+    text-align: right;
+    white-space: nowrap;
+}
+
+.join-button {
+    display: inline-block;
+    background-color: var(--sapphire-600);
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: var(--radius);
+    text-decoration: none;
+    font-size: 0.875rem;
+    font-weight: 500;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.join-button:hover {
+    background-color: var(--sapphire-700);
+    transform: translateY(-2px);
+}
+
+.join-button:active {
+    transform: translateY(0);
+}
+
+/* Empty State */
+.empty-state {
+    text-align: center;
+    color: var(--gray-500);
+    font-size: 1rem;
+    padding: 1.5rem;
+    background-color: var(--gray-50);
+    border-radius: var(--radius);
+    margin-top: 1rem;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .group-members-container {
+        margin: 1rem;
+        padding: 0 0.75rem;
+    }
+
+    .group-list-section,
+    .members-list-section {
+        padding: 1.5rem;
+    }
+
+    .section-title {
+        font-size: 1.5rem;
+    }
+
+    .group-table th,
+    .group-table td,
+    .members-table th,
+    .members-table td {
+        padding: 0.75rem;
+    }
+
+    .group-photo {
+        width: 60px;
+        height: 60px;
+    }
+
+    .member-photo {
+        width: 50px;
+        height: 50px;
+    }
+}
+
+@media (max-width: 576px) {
+    .group-table,
+    .members-table {
+        display: block;
+    }
+
+    .group-table thead,
+    .members-table thead {
+        display: none;
+    }
+
+    .group-table tbody,
+    .group-table tr,
+    .members-table tbody,
+    .members-table tr {
+        display: block;
+    }
+
+    .group-table tr,
+    .members-table tr {
+        margin-bottom: 1rem;
+        border: 1px solid var(--gray-200);
+        border-radius: var(--radius);
+        background-color: var(--gray-50);
+        box-shadow: var(--shadow-sm);
+    }
+
+    .group-table td,
+    .members-table td {
+        display: block;
+        padding: 0.75rem 1rem;
+        border: none;
+        position: relative;
+    }
+
+    .group-table td:before,
+    .members-table td:before {
+        content: attr(data-label);
+        font-weight: 600;
+        color: var(--gray-800);
+        display: block;
+        margin-bottom: 0.25rem;
+    }
+
+    .group-table .action-cell,
+    .members-table .action-cell {
+        text-align: left;
+        padding-bottom: 1rem;
+    }
+
+    .group-photo,
+    .member-photo {
+        max-width: 100%;
+        height: auto;
+    }
+}
+</style>
+{% endblock content %}

@@ -1,0 +1,166 @@
+{% extends 'Shop/Head.html' %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Product</title>
+    <style>
+        .product-section {
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background-color: #f9fafb;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .product-section h2 {
+            text-align: center;
+            margin-bottom: 1.5rem;
+            color: #1e3a8a;
+        }
+
+        .product-form {
+            display: grid;
+            gap: 1rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-label {
+            font-weight: 600;
+            margin-bottom: 0.3rem;
+            color: #374151;
+        }
+
+        .form-input, .form-textarea {
+            padding: 0.75rem;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            background-color: #f3f4f6;
+            transition: border-color 0.2s ease;
+        }
+
+        .form-input:focus, .form-textarea:focus {
+            border-color: #2563eb;
+            outline: none;
+        }
+
+        .form-textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .submit-btn {
+            padding: 0.75rem 1.5rem;
+            background-color: #2563eb;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .submit-btn:hover {
+            background-color: #1e40af;
+        }
+
+        .cancel-btn {
+            padding: 0.75rem 1.5rem;
+            background-color: #6b7280;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .product-table {
+            width: 90%;
+            margin: 2rem auto;
+            border-collapse: collapse;
+            text-align: center;
+        }
+
+        .product-table th, .product-table td {
+            border: 1px solid #d1d5db;
+            padding: 0.75rem;
+        }
+
+        .product-table th {
+            background-color: #1e40af;
+            color: white;
+        }
+
+        .product-table img {
+            border-radius: 6px;
+            object-fit: cover;
+        }
+
+        .delete-link {
+            color: #dc2626;
+            font-weight: 500;
+            text-decoration: none;
+        }
+
+        .delete-link:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="product-section">
+        <h2>Add New Product</h2>
+        <form method="POST" enctype="multipart/form-data" class="product-form">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="txt_name" class="form-label">Name</label>
+                <input type="text" name="txt_name" id="txt_name" class="form-input" required placeholder="Enter Product Name">
+            </div>
+            <div class="form-group">
+                <label for="txt_description" class="form-label">Description</label>
+                <textarea name="txt_description" id="txt_description" class="form-textarea" required placeholder="Enter Description"></textarea>
+            </div>
+            <div class="form-group">
+                <label for="file_photo" class="form-label">Photo</label>
+                <input type="file" name="file_photo" id="file_photo" class="form-input" required>
+            </div>
+            <div class="form-group">
+                <label for="txt_price" class="form-label">Price</label>
+                <input type="text" name="txt_price" id="txt_price" class="form-input" required placeholder="Enter Price">
+            </div>
+            <div style="text-align:center; margin-top: 1rem;">
+                <input type="submit" class="submit-btn" value="Submit">
+                <input type="reset" class="cancel-btn" value="Cancel">
+            </div>
+        </form>
+    </div>
+
+    <table class="product-table">
+        <tr>
+            <th>SI.No</th>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Photo</th>
+            <th>Price</th>
+            <th>Action</th>
+        </tr>
+        {% for i in product %}
+        <tr>
+            <td>{{ forloop.counter }}</td>
+            <td>{{ i.product_name }}</td>
+            <td>{{ i.product_description }}</td>
+            <td><img src="{{ i.product_photo.url }}" width="100px" height="100px" /></td>
+            <td>{{ i.product_price }}</td>
+            <td><a href="{% url 'Shop:delproduct' i.id 0 %}" class="delete-link">Delete</a></td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>
+{% endblock content %}

@@ -1,0 +1,289 @@
+{% extends 'Pet/Head.html' %}
+{% block content %}
+<div class="group-container">
+    <div class="group-list-section">
+        <h2 class="group-title"><i class="fas fa-users"></i> Explore Groups</h2>
+        {% if group %}
+        <table class="group-table">
+            <thead>
+                <tr>
+                    <th>No.</th>
+                    <th>Group Name</th>
+                    <th>Description</th>
+                    <th>Photo</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for i in group %}
+                <tr>
+                    <td data-label="No.">{{ forloop.counter }}</td>
+                    <td data-label="Group Name">{{ i.group_name }}</td>
+                    <td data-label="Description">{{ i.group_description }}</td>
+                    <td data-label="Photo">
+                        <img src="{{ i.group_photo.url }}" alt="{{ i.group_name }} photo" class="group-photo">
+                    </td>
+                    <td data-label="Action" class="action-cell">
+                        {% if i.member_count > 0 %}
+                        <a href="{% url 'Pet:groupchatpage' i.id %}" class="action-btn chat-btn">
+                            <i class="fas fa-comments"></i>
+                            Chat
+                        </a>
+                        {% else %}
+                        <a href="{% url 'Pet:joingroup' i.id %}" class="action-btn join-btn">
+                            <i class="fas fa-user-plus"></i>
+                            Join Group
+                        </a>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <p class="empty-state">No groups available. Check back later!</p>
+        {% endif %}
+    </div>
+</div>
+
+<style>
+.group-container {
+    max-width: 1000px;
+    margin: auto auto;
+    padding: 0 1rem;
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+/* Fade-in animation */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Group List Section */
+.group-list-section {
+    background-color: white;
+    border-radius: var(--radius-lg);
+    padding: 2rem;
+    box-shadow: var(--shadow-md);
+}
+
+.group-title {
+    font-size: 1.75rem;
+    font-weight: 600;
+    color: var(--gray-800);
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.group-title i {
+    color: var(--sapphire-500);
+    font-size: 1.5rem;
+}
+
+/* Group Table */
+.group-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    font-size: 0.9375rem;
+    background-color: white;
+    border-radius: var(--radius-md);
+    overflow: hidden;
+}
+
+.group-table th,
+.group-table td {
+    padding: 1rem;
+    text-align: left;
+}
+
+.group-table th {
+    background-color: var(--sapphire-100);
+    color: var(--gray-800);
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.875rem;
+}
+
+.group-table td {
+    border-bottom: 1px solid var(--gray-200);
+    color: var(--gray-700);
+}
+
+.group-table tr:last-child td {
+    border-bottom: none;
+}
+
+.group-table tr:hover {
+    background-color: var(--sapphire-50);
+    transition: background-color 0.2s ease;
+}
+
+/* Group Photo */
+.group-photo {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: var(--radius);
+    border: 2px solid var(--sapphire-200);
+    transition: transform 0.2s ease;
+}
+
+.group-photo:hover {
+    transform: scale(1.05);
+}
+
+/* Action buttons container */
+.action-cell {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-start;
+    height: 116px;
+    align-items: center;
+}
+
+/* Base styles for both buttons */
+.action-btn {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.6rem 1.2rem;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+    font-weight: 500;
+    font-size: 0.9rem;
+    text-decoration: none;
+    gap: 8px;
+}
+
+/* Join button specific styles */
+.join-btn {
+    background-color: #f22e15;
+    color: white;
+}
+
+.join-btn:hover {
+    background-color: #d42912;
+    transform: translateY(-2px);
+    box-shadow: 0 2px 8px rgba(242, 46, 21, 0.3);
+}
+
+/* Chat button specific styles */
+.chat-btn {
+    background-color: #6c8cfc;
+    color: white;
+}
+
+.chat-btn:hover {
+    background-color: #4a6af0;
+    transform: translateY(-2px);
+    box-shadow: 0 2px 8px rgba(108, 140, 252, 0.3);
+}
+
+/* Icon styles */
+.action-btn i {
+    font-size: 1rem;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .action-btn {
+        padding: 0.5rem 1rem;
+        font-size: 0.85rem;
+    }
+
+    .action-cell {
+        flex-direction: column;
+        gap: 8px;
+        align-items: flex-start;
+    }
+}
+
+/* Empty State */
+.empty-state {
+    text-align: center;
+    color: var(--gray-500);
+    font-size: 1rem;
+    padding: 1.5rem;
+    background-color: var(--gray-50);
+    border-radius: var(--radius);
+    margin-top: 1rem;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .group-container {
+        margin: 1rem;
+        padding: 0 0.75rem;
+    }
+
+    .group-list-section {
+        padding: 1.5rem;
+    }
+
+    .group-title {
+        font-size: 1.5rem;
+    }
+
+    .group-table th,
+    .group-table td {
+        padding: 0.75rem;
+    }
+
+    .group-photo {
+        width: 60px;
+        height: 60px;
+    }
+}
+
+@media (max-width: 576px) {
+    .group-table {
+        display: block;
+    }
+
+    .group-table thead {
+        display: none;
+    }
+
+    .group-table tbody,
+    .group-table tr {
+        display: block;
+    }
+
+    .group-table tr {
+        margin-bottom: 1rem;
+        border: 1px solid var(--gray-200);
+        border-radius: var(--radius);
+        background-color: var(--gray-50);
+        box-shadow: var(--shadow-sm);
+    }
+
+    .group-table td {
+        display: block;
+        padding: 0.75rem 1rem;
+        border: none;
+        position: relative;
+    }
+
+    .group-table td:before {
+        content: attr(data-label);
+        font-weight: 600;
+        color: var(--gray-800);
+        display: block;
+        margin-bottom: 0.25rem;
+    }
+
+    .group-table .action-cell {
+        text-align: left;
+        padding-bottom: 1rem;
+    }
+
+    .group-photo {
+        max-width: 100%;
+        height: auto;
+    }
+}
+</style>
+{% endblock content %}

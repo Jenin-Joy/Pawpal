@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shop Registration</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        :root {
+            --primary-50: #eef3ff;
+            --primary-100: #d9e4ff;
+            --primary-500: #4a6dff;
+            --primary-600: #3a56f5;
+            --primary-700: #2e43d9;
+            
+            --gray-100: #f3f4f6;
+            --gray-200: #e5e7eb;
+            --gray-300: #d1d5db;
+            --gray-400: #9ca3af;
+            --gray-500: #6b7280;
+            --gray-600: #4b5563;
+            --gray-700: #374151;
+            
+            --shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+
+            --radius: 0.5rem;
+            --radius-lg: 1rem;
+        }
+
+        body {
+            background-color: var(--gray-100);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 1rem;
+        }
+
+        .registration-container {
+            background-color: white;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-lg);
+            width: 100%;
+            max-width: 700px;
+            overflow: hidden;
+        }
+
+        .registration-header {
+            background-color: var(--primary-600);
+            color: white;
+            padding: 1.5rem;
+            text-align: center;
+        }
+
+        .registration-header h1 {
+            font-size: 1.75rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .registration-body {
+            padding: 2rem;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.25rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--gray-700);
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 1px solid var(--gray-300);
+            border-radius: var(--radius);
+            font-size: 1rem;
+            transition: all 0.2s ease;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary-500);
+            box-shadow: 0 0 0 3px var(--primary-50);
+        }
+
+        select.form-control {
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%236b7280' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 0.75rem center;
+            background-size: 16px 12px;
+            padding-right: 2.5rem;
+        }
+
+        .file-upload {
+            position: relative;
+            overflow: hidden;
+            display: inline-block;
+            width: 100%;
+        }
+
+        .file-upload-button {
+            border: 1px dashed var(--gray-300);
+            border-radius: var(--radius);
+            padding: 1rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            background-color: var(--gray-100);
+        }
+
+        .file-upload-button:hover {
+            border-color: var(--primary-500);
+            background-color: var(--primary-50);
+        }
+
+        .file-upload-button i {
+            font-size: 1.5rem;
+            color: var(--primary-500);
+            margin-bottom: 0.5rem;
+        }
+
+        .file-upload-button span {
+            display: block;
+            color: var(--gray-600);
+            font-size: 0.875rem;
+        }
+
+        .file-input {
+            position: absolute;
+            left: 0;
+            top: 0;
+            opacity: 0;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+        }
+
+        .file-preview {
+            margin-top: 0.5rem;
+            display: none;
+        }
+
+        .file-preview img {
+            max-width: 100px;
+            max-height: 100px;
+            border-radius: var(--radius);
+            border: 1px solid var(--gray-200);
+        }
+
+        .submit-btn {
+            grid-column: 1 / -1;
+            display: block;
+            width: 100%;
+            padding: 0.75rem;
+            background-color: var(--primary-600);
+            color: white;
+            border: none;
+            border-radius: var(--radius);
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+            margin-top: 1rem;
+        }
+
+        .submit-btn:hover {
+            background-color: var(--primary-700);
+        }
+
+        @media (max-width: 640px) {
+            .registration-header {
+                padding: 1.25rem;
+            }
+            
+            .registration-body {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="registration-container">
+        <div class="registration-header">
+            <h1><i class="fas fa-store-alt"></i> Shop Registration</h1>
+            <p>Create your business account</p>
+        </div>
+
+        <div class="registration-body">
+            <form method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="txt_name">Shop Name</label>
+                        <input type="text" name="txt_name" id="txt_name" class="form-control" placeholder="Enter shop name" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="txt_email">Email</label>
+                        <input type="email" name="txt_email" id="txt_email" class="form-control" placeholder="Enter email address" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="txt_contact">Contact Number</label>
+                        <input type="tel" name="txt_contact" id="txt_contact" class="form-control" placeholder="Enter contact number" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="txt_address">Address</label>
+                        <input type="text" name="txt_address" id="txt_address" class="form-control" placeholder="Enter shop address" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="sel_district">District</label>
+                        <select name="sel_district" id="sel_district" class="form-control" required>
+                            <option value="">Select District</option>
+                            {% for i in dis %}
+                            <option value="{{i.id}}">{{i.district_name}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="sel_place">Place</label>
+                        <select name="sel_place" id="sel_place" class="form-control" required>
+                            <option value="">Select Place</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Shop Photo</label>
+                        <div class="file-upload">
+                            <div class="file-upload-button">
+                                <i class="fas fa-camera"></i>
+                                <span>Click to upload photo</span>
+                                <input type="file" name="file_photo" id="file_photo" class="file-input" accept="image/*" required>
+                            </div>
+                        </div>
+                        <div class="file-preview" id="photoPreview">
+                            <img id="previewPhoto" src="#" alt="Photo Preview">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Proof Document</label>
+                        <div class="file-upload">
+                            <div class="file-upload-button">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Click to upload proof</span>
+                                <input type="file" name="file_proof" id="file_proof" class="file-input" required>
+                            </div>
+                        </div>
+                        <div class="file-preview" id="proofPreview">
+                            <img id="previewProof" src="#" alt="Proof Preview">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="txt_password">Password</label>
+                        <input type="password" name="txt_password" id="txt_password" class="form-control" placeholder="Create password" required>
+                    </div>
+
+                    <button type="submit" class="submit-btn">Register Shop</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script>
+        // District-Place AJAX
+        $("#sel_district").change(function () {
+            var did = $(this).val();
+            var ur = "{% url 'Guest:ajaxplace' %}"
+            $.ajax({
+                url: ur,
+                data: { did: did },
+                success: function (data) {
+                    $("#sel_place").html(data);
+                }
+            });
+        });
+
+        // Photo preview
+        document.getElementById('file_photo').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            const preview = document.getElementById('photoPreview');
+            const img = document.getElementById('previewPhoto');
+            
+            if (file && file.type.match('image.*')) {
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    img.src = event.target.result;
+                    preview.style.display = 'block';
+                }
+                reader.readAsDataURL(file);
+            } else {
+                preview.style.display = 'none';
+            }
+        });
+
+        // Proof preview (for images only)
+        document.getElementById('file_proof').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            const preview = document.getElementById('proofPreview');
+            const img = document.getElementById('previewProof');
+            
+            if (file && file.type.match('image.*')) {
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    img.src = event.target.result;
+                    preview.style.display = 'block';
+                }
+                reader.readAsDataURL(file);
+            } else {
+                preview.style.display = 'none';
+            }
+        });
+    </script>
+</body>
+</html>

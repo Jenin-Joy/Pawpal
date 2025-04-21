@@ -1,0 +1,265 @@
+{% extends 'Guest/Head.html' %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PetPal - Login</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        :root {
+            --sapphire-50: #eef3ff;
+            --sapphire-100: #d9e4ff;
+            --sapphire-200: #bcceff;
+            --sapphire-300: #94b0ff;
+            --sapphire-400: #6a8eff;
+            --sapphire-500: #4a6dff;
+            --sapphire-600: #3a56f5;
+            --sapphire-700: #2e43d9;
+            --sapphire-800: #2939b0;
+            --sapphire-900: #263487;
+            --sapphire-950: #1a2056;
+
+            --gray-50: #f9fafb;
+            --gray-100: #f3f4f6;
+            --gray-200: #e5e7eb;
+            --gray-300: #d1d5db;
+            --gray-400: #9ca3af;
+            --gray-500: #6b7280;
+            --gray-600: #4b5563;
+            --gray-700: #374151;
+            --gray-800: #1f2937;
+            --gray-900: #111827;
+
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+
+            --radius-sm: 0.25rem;
+            --radius: 0.5rem;
+            --radius-md: 0.75rem;
+            --radius-lg: 1rem;
+            --radius-full: 9999px;
+        }
+
+        body {
+            background-color: var(--gray-100);
+            /* display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center; */
+            min-height: 100vh;
+            /* padding: 1rem; */
+        }
+
+        .login-container {
+            background-color: white;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-lg);
+            width: 100%;
+            max-width: 400px;
+            overflow: hidden;
+        }
+
+        .login-header {
+            background-color: var(--sapphire-600);
+            color: white;
+            padding: 1.5rem;
+            text-align: center;
+        }
+
+        .login-header h1 {
+            font-size: 1.75rem;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+        }
+
+        .login-header p {
+            font-size: 0.9375rem;
+            opacity: 0.9;
+        }
+
+        .login-body {
+            padding: 2rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.25rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--gray-700);
+        }
+
+        .input-group {
+            position: relative;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 0.75rem 1rem 0.75rem 2.5rem;
+            border: 1px solid var(--gray-300);
+            border-radius: var(--radius);
+            font-size: 1rem;
+            transition: all 0.2s ease;
+        }
+
+        .input-group input:focus {
+            outline: none;
+            border-color: var(--sapphire-300);
+            box-shadow: 0 0 0 3px var(--sapphire-100);
+        }
+
+        .input-icon {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--gray-500);
+        }
+
+        .btn {
+            display: inline-block;
+            width: 100%;
+            padding: 0.75rem;
+            border: none;
+            border-radius: var(--radius);
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-align: center;
+        }
+
+        .btn-primary {
+            background-color: var(--sapphire-600);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--sapphire-700);
+        }
+
+        .login-footer {
+            text-align: center;
+            padding: 0 2rem 2rem;
+            color: var(--gray-600);
+            font-size: 0.9375rem;
+        }
+
+        .login-footer a {
+            color: var(--sapphire-600);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .login-footer a:hover {
+            text-decoration: underline;
+        }
+
+        .password-toggle {
+            position: absolute;
+            right: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--gray-500);
+            cursor: pointer;
+        }
+
+        @media (max-width: 480px) {
+            .login-header {
+                padding: 1.25rem;
+            }
+            
+            .login-body {
+                padding: 1.5rem;
+            }
+        }
+        .cont{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="cont">
+        <div class="login-container">
+        <div class="login-header">
+            <h1>
+                <i class="fas fa-paw"></i>
+                PetPal
+            </h1>
+            <p>Welcome back! Please login to your account</p>
+        </div>
+
+        <div class="login-body">
+            <form method="POST">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="txt_email">Email</label>
+                    <div class="input-group">
+                        <i class="fas fa-envelope input-icon"></i>
+                        <input type="email" name="txt_email" id="txt_email" placeholder="Enter your email" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="txt_password">Password</label>
+                    <div class="input-group">
+                        <i class="fas fa-lock input-icon"></i>
+                        <input type="password" name="txt_password" id="txt_password" placeholder="Enter your password" required>
+                        <i class="fas fa-eye password-toggle" id="togglePassword"></i>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-primary">Login</button>
+            </form>
+        </div>
+
+        <div class="login-footer">
+            Don't have an account? <a href="#">Sign up</a> | <a href="#">Forgot password?</a>
+        </div>
+    </div>
+    </div>
+    
+
+    {% if msg %}
+    <script>
+        alert('{{msg}}');
+        window.location = "{% url 'Guest:login' %}";
+    </script>
+    {% endif %}
+
+    <script>
+        // Toggle password visibility
+        const togglePassword = document.querySelector('#togglePassword');
+        const password = document.querySelector('#txt_password');
+
+        togglePassword.addEventListener('click', function() {
+            const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
+            password.setAttribute('type', type);
+            this.classList.toggle('fa-eye-slash');
+        });
+    </script>
+</body>
+
+</html>
+{% endblock content %}

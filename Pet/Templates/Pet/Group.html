@@ -1,0 +1,271 @@
+{% extends 'Pet/Head.html' %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pet Groups</title>
+    <style>
+        :root {
+            /* Using your existing sapphire color palette */
+            --primary-color: var(--sapphire-600);
+            --primary-hover: var(--sapphire-700);
+            --secondary-color: var(--sapphire-100);
+            --text-primary: var(--gray-900);
+            --text-secondary: var(--gray-600);
+            --background-light: var(--gray-50);
+            --border-color: var(--gray-200);
+        }
+
+        body {
+            background-color: var(--background-light);
+            color: var(--text-primary);
+        }
+
+        .group-container {
+            max-width: 1200px;
+            margin: auto auto;
+            padding: 0 1rem;
+        }
+
+        .form-container {
+            background-color: #ffffff;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            margin-bottom: 2rem;
+            border: 1px solid var(--border-color);
+        }
+
+        .form-title {
+            font-size: 1.75rem;
+            color: var(--sapphire-800);
+            margin-bottom: 1.5rem;
+            text-align: center;
+            font-weight: 600;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid var(--border-color);
+            border-radius: 5px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--sapphire-400);
+            box-shadow: 0 0 0 3px var(--sapphire-100);
+        }
+
+        textarea.form-control {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .submit-btn {
+            background-color: var(--sapphire-600);
+            color: white;
+            padding: 0.75rem 2rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            display: block;
+            margin: 0 auto;
+            font-weight: 500;
+        }
+
+        .submit-btn:hover {
+            background-color: var(--sapphire-700);
+            transform: translateY(-1px);
+        }
+
+        /* Table Styles */
+        .table-container {
+            overflow-x: auto;
+            margin-top: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+
+        .group-table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: white;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .group-table th {
+            background-color: var(--sapphire-600);
+            color: white;
+            padding: 1rem;
+            text-align: left;
+            font-weight: 500;
+        }
+
+        .group-table td {
+            padding: 1rem;
+            border-bottom: 1px solid var(--border-color);
+            color: var(--text-primary);
+        }
+
+        .group-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .group-table img {
+            border-radius: 8px;
+            object-fit: cover;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .group-table tr:hover {
+            background-color: var(--sapphire-50);
+        }
+
+        .action-btn {
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+            margin: 0.25rem;
+            font-weight: 500;
+        }
+
+        .action-btn.edit {
+            background-color: var(--sapphire-500);
+            color: white;
+        }
+
+        .action-btn.edit:hover {
+            background-color: var(--sapphire-600);
+        }
+
+        .action-btn.delete {
+            background-color: #EF4444;
+            color: white;
+        }
+
+        .action-btn.chat {
+            background-color: #6c8cfc;
+            color: white;
+        }
+
+        .action-btn.delete:hover {
+            background-color: #DC2626;
+        }
+
+        .action-btn.chat:hover {
+            background-color: #4a6af0;
+        }
+
+        /* File input styling */
+        input[type="file"] {
+            padding: 0.5rem;
+        }
+
+        input[type="file"]::-webkit-file-upload-button {
+            background-color: var(--sapphire-500);
+            color: white;
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        input[type="file"]::-webkit-file-upload-button:hover {
+            background-color: var(--sapphire-600);
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .form-container {
+                padding: 1rem;
+            }
+
+            .group-table th,
+            .group-table td {
+                padding: 0.75rem;
+            }
+
+            .submit-btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="group-container">
+        <div class="form-container">
+            <h2 class="form-title">Add New Pet Group</h2>
+            <form method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="txt_name">Name</label>
+                    <input type="text" class="form-control" name="txt_name" id="txt_name" required>
+                </div>
+                <div class="form-group">
+                    <label for="txt_description">Description</label>
+                    <textarea class="form-control" name="txt_description" id="txt_description" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="file_photo">Photo</label>
+                    <input type="file" class="form-control" name="file_photo" id="file_photo" required>
+                </div>
+                <button type="submit" class="submit-btn">Submit</button>
+            </form>
+        </div>
+
+        <div class="table-container">
+            <table class="group-table">
+                <thead>
+                    <tr>
+                        <th>SI No</th>
+                        <th>Group Name</th>
+                        <th>Description</th>
+                        <th>Photo</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for i in pet %}
+                    <tr>
+                        <td>{{forloop.counter}}</td>
+                        <td>{{i.group_name}}</td>
+                        <td>{{i.group_description}}</td>
+                        <td><img src="{{i.group_photo.url}}" width="100" height="100" alt="Group Photo"></td>
+                        <td>
+                            <a href="{% url 'Pet:deletegroup' i.id %}"><button type="button" class="action-btn delete">Delete</button></a>
+                            <a href="{% url 'Pet:groupchatpage' i.id %}"><button type="button" class="action-btn chat"><i class="fas fa-comments"></i> Chat</button> </a>
+                            <a href="{% url 'Pet:viewmembers' i.id %}"><button type="button" class="action-btn chat">Members</button> </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+</html>
+{% endblock content %}

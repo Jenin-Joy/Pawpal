@@ -1,0 +1,204 @@
+{% extends 'Shop/Head.html' %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        /* Profile Section */
+        .profile-section {
+            background-color: var(--gray-50);
+            border-radius: var(--radius-lg);
+            padding: 1.5rem;
+            box-shadow: var(--shadow);
+            margin-bottom: 1.5rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* Header */
+        .contacts-header {
+            margin-bottom: 1.25rem;
+        }
+
+        .contacts-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--gray-800);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .contacts-title i {
+            color: var(--sapphire-500);
+        }
+
+        /* Profile Content */
+        .profile-content {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        /* Profile Image */
+        .profile-image {
+            display: flex;
+            justify-content: center;
+        }
+
+        .profile-image img {
+            width: 150px;
+            height: 150px;
+            border-radius: var(--radius-full);
+            object-fit: cover;
+            border: 3px solid var(--sapphire-200);
+            transition: transform 0.2s ease;
+        }
+
+        .profile-image img:hover {
+            transform: scale(1.05);
+        }
+
+        /* Profile Details */
+        .profile-details {
+            display: grid;
+            gap: 1rem;
+        }
+
+        .profile-item {
+            display: flex;
+            align-items: center;
+            padding: 0.75rem;
+            background-color: var(--gray-100);
+            border-radius: var(--radius);
+            transition: background-color 0.2s ease;
+        }
+
+        .profile-item:hover {
+            background-color: var(--sapphire-50);
+        }
+
+        .profile-label {
+            font-weight: 600;
+            color: var(--gray-700);
+            width: 100px;
+            flex-shrink: 0;
+        }
+
+        .profile-value {
+            color: var(--gray-800);
+            flex-grow: 1;
+            word-break: break-word;
+        }
+
+        /* Profile Actions */
+        .profile-actions {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+        }
+
+        .action-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            background-color: var(--sapphire-600);
+            color: white;
+            text-decoration: none;
+            border-radius: var(--radius);
+            font-weight: 500;
+            transition: background-color 0.2s ease;
+        }
+
+        .action-link:hover {
+            background-color: var(--sapphire-700);
+        }
+
+        .action-link i {
+            font-size: 1.125rem;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .profile-section {
+                padding: 1rem;
+            }
+
+            .profile-image img {
+                width: 120px;
+                height: 120px;
+            }
+
+            .profile-item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.5rem;
+            }
+
+            .profile-label {
+                width: auto;
+            }
+
+            .profile-actions {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .action-link {
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="profile-section">
+        <div class="contacts-header">
+            <h3 class="contacts-title"><i class="fas fa-user"></i> Profile</h3>
+        </div>
+        <div class="profile-content">
+            <div class="profile-image">
+                <img src="{{shop.shop_photo.url}}" alt="Profile picture of {{shop.shop_name}}" />
+            </div>
+            <div class="profile-details">
+                <div class="profile-item">
+                    <span class="profile-label">Name</span>
+                    <span class="profile-value">{{shop.shop_name}}</span>
+                </div>
+                <div class="profile-item">
+                    <span class="profile-label">Email</span>
+                    <span class="profile-value">{{shop.shop_email}}</span>
+                </div>
+                <div class="profile-item">
+                    <span class="profile-label">Contact</span>
+                    <span class="profile-value">{{shop.shop_contact}}</span>
+                </div>
+                <div class="profile-item">
+                    <span class="profile-label">Address</span>
+                    <span class="profile-value">{{shop.shop_address}}</span>
+                </div>
+                <div class="profile-item">
+                    <span class="profile-label">District</span>
+                    <span class="profile-value">{{shop.place.district.district_name}}</span>
+                </div>
+                <div class="profile-item">
+                    <span class="profile-label">Place</span>
+                    <span class="profile-value">{{shop.place.place_name}}</span>
+                </div>
+            </div>
+            <div class="profile-actions">
+                <a href="{% url 'Shop:editprofile' %}" class="action-link">Edit Profile</a>
+                <a href="{% url 'Shop:changepassword' %}" class="action-link">Change Password</a>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
+{% endblock content %}
