@@ -214,9 +214,41 @@ def ajaxgetdata(request):
     # users = list(contact.values())
     return JsonResponse({"profile":profile,"users":users,"myid":request.session["pid"],"shops":shs})
 
+# def viewuser(request):
+#     user = tbl_pet.objects.filter().exclude(id=request.session["pid"])
+#     return render(request,"Pet/ViewUsers.html",{"user":user})
+
 def viewuser(request):
-    user = tbl_pet.objects.filter().exclude(id=request.session["pid"])
-    return render(request,"Pet/ViewUsers.html",{"user":user})
+    if 'pid' not in request.session:
+        return redirect("Guest:login")
+    
+    # Get all users except the current user
+    users = tbl_pet.objects.exclude(id=request.session["pid"])
+    current_user_id = request.session["pid"]
+    
+    # Process each user to determine friend status
+    for user in users:
+        # Check if there's a friend relationship
+        friend = tbl_friends.objects.filter(
+            (Q(from_user_id=current_user_id, to_user_id=user.id) |
+             Q(from_user_id=user.id, to_user_id=current_user_id))
+        ).first()
+        
+        if friend:
+            if friend.status == 1:
+                user.friend_status = "friends"  # Status 1 means friends
+            elif friend.to_user_id == current_user_id:
+                user.friend_status = "accept"  # Current user received a request
+                user.friend_id = friend.id  # Store friend ID for accept action
+            elif friend.from_user_id == current_user_id:
+                user.friend_status = "sent"  # Current user sent a request
+        else:
+            user.friend_status = "send_request"  # No relationship exists
+    
+    return render(request, "Pet/ViewUsers.html", {
+        "user": users,
+        "userid": current_user_id
+    })
 
 def sendfriendrequest(request):
     tbl_friends.objects.create(
